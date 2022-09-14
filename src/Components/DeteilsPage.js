@@ -21,7 +21,8 @@ function DeteilsPage() {
   const navigate = useNavigate()
   const handleSubmit = async (e, values) => {
     try {
-      await AxiosInstance.post("/api/users/addDeteils", values);
+      const token = localStorage.getItem('userToken')
+      await AxiosInstance.post("/api/users/addDeteils", values,{headers:{authtoken:token}});
       toast("Successfully created");
       navigate('/tableView')
     } catch (error) {
