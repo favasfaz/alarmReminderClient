@@ -1,5 +1,5 @@
 import axios from "axios";
 
-export const axiosInstance = axios.create({
+export const AxiosInstance = axios.create({
     baseURL : "https://alarmreminderserver.herokuapp.com"
 })
