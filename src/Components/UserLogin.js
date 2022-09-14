@@ -9,7 +9,7 @@ import {
 import React, { useState, useEffect } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import {AxiosInstance} from "../config";
 
 function UserLogin() {
   const [email, setEmail] = useState("");
@@ -28,7 +28,7 @@ function UserLogin() {
     e.preventDefault();
     try {
       const data = { email, password };
-      const logined = await axios.post("/api/users/login", data);
+      const logined = await AxiosInstance.post("/api/users/login", data);
       localStorage.setItem("userToken", logined.data.token);
       navigate("/home");
     } catch (error) {

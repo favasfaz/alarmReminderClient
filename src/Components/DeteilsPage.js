@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import { detailsValidation } from "../formValidation/deteilsValidation";
-import axios from "axios";
+import {AxiosInstance} from "../config";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {useNavigate} from 'react-router-dom'
@@ -21,7 +21,7 @@ function DeteilsPage() {
   const navigate = useNavigate()
   const handleSubmit = async (e, values) => {
     try {
-      await axios.post("/api/users/addDeteils", values);
+      await AxiosInstance.post("/api/users/addDeteils", values);
       toast("Successfully created");
       navigate('/tableView')
     } catch (error) {
