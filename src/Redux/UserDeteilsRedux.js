@@ -8,7 +8,8 @@ const initialState = {
 };
 
 export const userDeteils = createAsyncThunk("users/userDeteils", async () => {
-  const user = await AxiosInstance.get("/api/users");
+  const token = localStorage.getItem('userToken')
+  const user = await AxiosInstance.get("/api/users",{headers:{authtoken:token}});
   return user.data;
 });
 
