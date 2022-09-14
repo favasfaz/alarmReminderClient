@@ -5,7 +5,10 @@ import {
   Typography,
   Grid,
   Avatar,
+  LinearProgress,
+  Box
 } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +19,8 @@ function UserLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  const [loading,setLoading] = useState(false)
+  const theme = createTheme();
   useEffect(() => {
     const auth = localStorage.getItem("userToken");
     if (auth) {
@@ -27,17 +31,26 @@ function UserLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       const data = { email, password };
       const logined = await AxiosInstance.post("/api/users/login", data);
       localStorage.setItem("userToken", logined.data.token);
+      setLoading(false)
       navigate("/home");
     } catch (error) {
+      setLoading(false)
       setError(error.response.data.message);
     }
   };
 
   return (
-    <Grid container mt={5}>
+    <ThemeProvider theme={theme}>
+      {loading && (
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      )}
+<Grid container mt={5}>
       <Paper
         elevation={10}
         style={{ padding: 40, height: "60vh", width: 380, margin: "20px auto" }}
@@ -51,12 +64,10 @@ function UserLogin() {
           </Typography>
         </Grid>
         <Grid mt={5}>
-          {error ? (
-            <Typography color="error.main" variant="subtitle1" component="div">
+          {error && (
+            <Typography color="error.main" variant="h6" component="div">
               {error}
             </Typography>
-          ) : (
-            ""
           )}
 
           <TextField
@@ -99,6 +110,9 @@ function UserLogin() {
         </Typography>
       </Paper>
     </Grid>
+
+    </ThemeProvider>
+    
   );
 }
 
